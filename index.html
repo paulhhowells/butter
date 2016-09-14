@@ -5,16 +5,34 @@
     <meta name="HandheldFriendly" content="True" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Butter</title>
-    <style>
-      html, body {
+    <style type="text/css">
+      /* Normalise */
+      html,
+      body {
         margin: 0;
         padding: 0;
       }
       body {
-        font-family: sans-serif;
+        color: #111;
+        background-color: #fff;
+        font-family: "Helvetica Neue", sans-serif;
+        font-size: 100%;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        line-height: 1.5;
       }
+      
       input[type=text] {
         font-size: 1em;
+      }
+      
+      /* Layout Styles */
+      .wrapper {
+        width: 60em;
+        margin: 0 auto;
+        padding: 1em;
+        background-color: #eee;
+        overflow: hidden;
       }
     </style>
     <script src="node_modules/jquery/dist/jquery.js"></script>
