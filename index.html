@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Butter</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: sans-serif;
+      }
+      input[type=text] {
+        font-size: 1em;
+      }
+    </style>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+
+    // Assumption: number will never contain comma.
+    function process (text) {
+      'use strict';
+
+      var
+        cells,
+        stripped,
+        commaDelimitedArray,
+        spreadsheetDelimitedArray;
+
+      // Might be spreadsheet delimited, comma delimited, or space delimited;
+      // Figure out which, and convert to an array.
+
+      // Strip whitespace (i.e. not A-Za-z0-9_) from start and end:
+      // Could use .trim() instead if browser support was okay.
+      stripped = text.replace(/^\W+/, '');
+      stripped = stripped.replace(/\W+$/, '');
+
+      // Do a test to see if it is a singleton?
+
+      // Could have commas and spaces, so test for commas first.
+      commaDelimitedArray = stripped.split(/,\s*/);
+      if (commaDelimitedArray.length > 1) {
+        cells = commaDelimitedArray;
+      }
+      else {
+        // Might be spreadsheet or whitespace delimited.
+
+        // See if it contains tabs or newlines because a spreadsheet
+        // is likely to separate:
+        // cells by tabs (\t)
+        // rows by newlines (\n).
+        spreadsheetDelimitedArray = stripped.split(/\t|\n/gi);
+        if (commaDelimitedArray.length > 1) {
+          // If spreadsheet delimited:
+          cells = spreadsheetDelimitedArray;
+        }
+        else {
+          // Use whitespace as a delimiter.
+          cells = stripped.split(/\s+/gi);
+        }
+      }
+
+      console.log(encodeURI(stripped));
+      console.log('cells', cells);
+
+      printCells(cells);
+    }
+
+    function printCells (cells) {
+      var $list = $('#list');
+
+      $list.html('');
+
+      $.each(cells, function (i, cell) {
+        $('<li />')
+          .text(cell)
+          .appendTo($list);
+      });
+    }
+
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Butter</h1>
+      <p>Spreadsheet paste prototype</p>
+      <input type="text" onchange="process(this.value)">
+      <ol id="list"></ol>
+    </div>
+  </body>
+</html>
